@@ -8,331 +8,426 @@
     <style>
         :root {
             --primary: #002080;
-            --primary-hover: #001555;
-            --text-main: #333333;
-            --text-muted: #5a5a5a;
-            --link-orange: #e66e00;
-            --link-doi: #0046c8;
-            --bg-color: #f4f5f7;
+            --primary-light: #e6ecff;
+            --accent: #e66e00;
+            --text-main: #2d3748;
+            --text-muted: #718096;
+            --bg-page: #f7fafc;
+            --bg-card: #ffffff;
+            --border: #e2e8f0;
         }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background-color: var(--bg-color);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-page);
             color: var(--text-main);
-            line-height: 1.6;
-            margin: 0;
-            padding: 0;
+            line-height: 1.7;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
-        /* Navigation Bar */
+
+        /* --- NAVIGATION --- */
         nav {
-            background-color: var(--primary);
+            background: #ffffff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 0 5%;
         }
         .nav-container {
-            max-width: 900px;
+            max-width: 1200px;
             margin: 0 auto;
             display: flex;
-            justify-content: center;
-            gap: 10px;
-            padding: 10px 20px;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+        .nav-brand {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+        }
+        .nav-links {
+            display: flex;
+            gap: 5px;
         }
         .nav-btn {
             background: none;
             border: none;
-            color: rgba(255, 255, 255, 0.8);
+            padding: 10px 20px;
             font-size: 1rem;
             font-weight: 600;
-            padding: 10px 20px;
+            color: var(--text-muted);
             cursor: pointer;
-            border-radius: 4px;
-            transition: all 0.2s;
+            border-radius: 6px;
+            transition: all 0.2s ease;
         }
-        .nav-btn:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-            color: #ffffff;
-        }
-        .nav-btn.active {
-            background-color: rgba(255, 255, 255, 0.2);
-            color: #ffffff;
-        }
-        
-        /* Main Container */
-        .container {
-            max-width: 900px;
-            margin: 40px auto;
-            background: #ffffff;
-            padding: 50px 60px;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-        }
-        
-        /* Tab Visibility Logic */
-        .tab-content {
-            display: none;
-            animation: fadeIn 0.4s ease-in-out;
-        }
-        .tab-content.active {
-            display: block;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        .nav-btn:hover { color: var(--primary); background: var(--primary-light); }
+        .nav-btn.active { color: var(--primary); background: var(--primary-light); }
 
-        /* Standardized Elements */
-        header {
-            text-align: center;
-            border-bottom: 2px solid var(--primary);
-            padding-bottom: 30px;
-            margin-bottom: 30px;
+        /* --- MAIN CONTENT AREA --- */
+        main {
+            flex: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 5%;
+            width: 100%;
         }
-        header h1 {
-            color: var(--primary);
-            font-size: 2.5rem;
-            margin: 0 0 10px 0;
-            letter-spacing: -0.5px;
-        }
-        .subtitle {
-            font-size: 1.1rem;
-            color: var(--text-main);
-            margin-bottom: 15px;
-        }
-        .contact-links {
+        .page-section { display: none; animation: fadeIn 0.4s ease; }
+        .page-section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- HOME: HERO SECTION --- */
+        .hero {
             display: flex;
+            align-items: center;
+            gap: 50px;
+            margin-bottom: 60px;
+            background: var(--bg-card);
+            padding: 50px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+        }
+        .hero-text { flex: 1; }
+        .hero-text h1 { font-size: 2.8rem; color: var(--primary); margin-bottom: 10px; line-height: 1.2; }
+        .hero-text h2 { font-size: 1.3rem; color: var(--text-muted); font-weight: 400; margin-bottom: 25px; }
+        .hero-text p { font-size: 1.05rem; margin-bottom: 30px; text-align: justify; }
+        .hero-image {
+            flex-shrink: 0;
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 4px solid var(--primary-light);
+            background: #e2e8f0;
+            display: flex;
+            align-items: center;
             justify-content: center;
-            flex-wrap: wrap;
-            gap: 15px;
-            font-size: 0.95rem;
+            color: #a0aec0;
         }
-        a {
-            color: var(--link-orange);
+        .hero-image img { width: 100%; height: 100%; object-fit: cover; }
+        .btn-primary {
+            background: var(--primary);
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 6px;
             text-decoration: none;
-            transition: opacity 0.2s;
+            font-weight: 600;
+            transition: background 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
         }
-        a:hover { opacity: 0.8; text-decoration: underline; }
-        .contact-links a { color: var(--primary); display: flex; align-items: center; gap: 6px; }
-        h2 {
-            color: var(--primary);
-            font-size: 1.25rem;
-            text-transform: uppercase;
-            border-bottom: 1px solid var(--primary);
-            padding-bottom: 5px;
-            margin-top: 30px;
-            margin-bottom: 20px;
+        .btn-primary:hover { background: #001555; color: #fff; text-decoration: none; }
+
+        /* --- HOME: NEWS SECTION --- */
+        .section-title { font-size: 1.5rem; color: var(--primary); border-bottom: 2px solid var(--primary-light); padding-bottom: 10px; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .news-container {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 30px;
+            border-left: 4px solid var(--accent);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
         }
-        h3 { font-size: 1.1rem; color: #444; margin-bottom: 15px; }
-        .profile { font-family: Georgia, 'Times New Roman', serif; font-size: 1.05rem; text-align: justify; }
+        .news-item { display: flex; gap: 20px; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--border); }
+        .news-item:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+        .news-date { font-weight: 700; color: var(--primary); min-width: 120px; }
+
+        /* --- RESEARCH: CARD GRID --- */
+        .research-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+        .card {
+            background: var(--bg-card);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            border-top: 4px solid var(--primary);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.06); }
+        .card i { font-size: 2rem; color: var(--accent); margin-bottom: 20px; }
+        .card h3 { font-size: 1.2rem; color: var(--primary); margin-bottom: 15px; }
+        .card p { font-size: 0.95rem; color: var(--text-muted); text-align: justify; }
+
+        /* --- CV FORMATTING --- */
+        .cv-block { background: var(--bg-card); padding: 40px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
+        .cv-entry { margin-bottom: 25px; }
+        .cv-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 5px; }
+        .cv-title { font-weight: 700; font-size: 1.1rem; color: var(--text-main); }
+        .cv-date { color: var(--accent); font-weight: 600; font-size: 0.95rem; }
+        .cv-subtitle { font-style: italic; color: var(--text-muted); margin-bottom: 8px; }
         
-        /* CV Specific Styling */
-        .entry { margin-bottom: 20px; }
-        .entry-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 3px; }
-        .entry-title { font-weight: 600; font-size: 1.05rem; }
-        .entry-date { color: var(--text-muted); font-size: 0.95rem; }
-        .entry-subtitle { font-style: italic; color: var(--text-main); margin-bottom: 5px; }
-        .entry-desc { font-size: 0.95rem; margin: 0; }
-        .pub-list { list-style-type: none; padding-left: 0; font-size: 0.95rem; }
-        .pub-list li { position: relative; padding-left: 45px; margin-bottom: 12px; }
-        .pub-list .label { position: absolute; left: 0; top: 0; font-weight: 600; color: var(--primary); }
-        .doi { color: var(--link-doi); }
-        .grid-table { display: grid; grid-template-columns: 1fr auto; gap: 10px 20px; font-size: 0.95rem; margin-bottom: 15px; }
-        .skills-grid { display: grid; grid-template-columns: 250px 1fr; gap: 10px 20px; font-size: 0.95rem; }
-        .grid-title { font-weight: 600; }
-        .grid-date { color: var(--text-muted); text-align: right; }
-        .feature-box { background: #f9f9fb; border-left: 4px solid var(--primary); padding: 15px 20px; margin-bottom: 20px; }
-        .feature-box h3 { margin-top: 0; color: var(--primary); }
+        .pub-list { list-style: none; }
+        .pub-list li { position: relative; padding-left: 60px; margin-bottom: 20px; font-size: 0.95rem; }
+        .pub-list .label { position: absolute; left: 0; top: 0; background: var(--primary-light); color: var(--primary); padding: 2px 8px; border-radius: 4px; font-weight: 600; font-size: 0.85rem; }
+        a { color: var(--accent); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        /* --- FOOTER --- */
+        footer {
+            background: var(--primary);
+            color: #ffffff;
+            padding: 40px 5%;
+            text-align: center;
+            margin-top: auto;
+        }
+        .social-links { display: flex; justify-content: center; gap: 20px; margin-bottom: 20px; }
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            color: #ffffff;
+            transition: background 0.2s;
+        }
+        .social-links a:hover { background: var(--accent); text-decoration: none; }
+        .footer-text { font-size: 0.9rem; color: rgba(255,255,255,0.7); }
 
         @media (max-width: 768px) {
-            .container { padding: 30px 20px; margin: 20px; }
-            .nav-container { flex-wrap: wrap; padding: 10px; }
-            .nav-btn { width: 48%; padding: 8px 10px; text-align: center; }
-            .entry-header { flex-direction: column; }
-            .entry-date { margin-top: 3px; text-align: left; }
-            .grid-table { grid-template-columns: 1fr; gap: 5px; }
-            .grid-date { text-align: left; }
-            .skills-grid { grid-template-columns: 1fr; gap: 5px; margin-bottom: 15px;}
+            .nav-container { flex-direction: column; height: auto; padding: 15px 0; gap: 15px; }
+            .nav-links { flex-wrap: wrap; justify-content: center; }
+            .hero { flex-direction: column-reverse; text-align: center; padding: 30px 20px; }
+            .hero-text p { text-align: center; }
+            .news-item { flex-direction: column; gap: 5px; }
+            .cv-header { flex-direction: column; }
         }
     </style>
 </head>
 <body>
 
-<!-- Navigation Bar -->
-<nav>
-    <div class="nav-container">
-        <button class="nav-btn active" onclick="openTab('home')"><i class="fas fa-home"></i> Home</button>
-        <button class="nav-btn" onclick="openTab('research')"><i class="fas fa-microscope"></i> Research</button>
-        <button class="nav-btn" onclick="openTab('software')"><i class="fas fa-code"></i> Software</button>
-        <button class="nav-btn" onclick="openTab('cv')"><i class="fas fa-file-alt"></i> Full CV</button>
-    </div>
-</nav>
-
-<div class="container">
-    <header>
-        <h1>Dr. Jivesh Dixit</h1>
-        <div class="subtitle">Climate Scientist | Seasonal-to-Decadal Variability & Prediction | Deep Learning</div>
-        <div style="font-size: 0.95rem; margin-bottom: 10px;">Project Scientist-II, National Centre for Medium Range Weather Forecasting (NCMRWF), Noida, India</div>
-        <div class="contact-links">
-            <a href="tel:+918077013002"><i class="fas fa-phone"></i> +91 80770 13002</a>
-            <a href="mailto:jiveshdixit@gmail.com"><i class="fas fa-envelope"></i> jiveshdixit@gmail.com</a>
-            <a href="https://github.com/JiveshDixit" target="_blank"><i class="fab fa-github"></i> GitHub</a>
-            <a href="https://www.linkedin.com/in/jivesh-dixit-0b237629/" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
-        </div>
-    </header>
-
-    <!-- HOME TAB -->
-    <div id="home" class="tab-content active">
-        <h2>About Me</h2>
-        <div class="profile">
-            <p>I am a climate scientist specializing in seasonal-to-decadal variability and prediction. Currently serving as a Project Scientist-II at the National Centre for Medium Range Weather Forecasting (NCMRWF) in Noida, my core work involves deploying deep learning architectures to improve extended-range meteorological forecasts.</p>
-            <p>My academic foundation bridges computational fluid dynamics and atmospheric sciences. Following a Master of Engineering from IISc Bangalore and industry experience in aerothermal CFD at Tata Motors, I transitioned to climate science. As a Prime Minister’s Research Fellow at the Centre for Atmospheric Sciences, IIT Delhi, I completed my doctoral research focusing on the global predictability of decadal climate variability modes.</p>
-            <p><strong>Core Focus Areas:</strong></p>
-            <ul style="padding-left: 20px;">
-                <li>Global predictability of the Pacific Decadal Oscillation (PDO) and Tropical Atlantic SST Gradient (TAG).</li>
-                <li>Deep learning applications for subseasonal-to-seasonal (S2S) timescales, including bias correction and downscaling.</li>
-                <li>Evaluation and post-processing of AI weather forecasting frameworks.</li>
-                <li>Regional ocean modeling and computational physics.</li>
-            </ul>
-        </div>
-    </div>
-
-    <!-- RESEARCH TAB -->
-    <div id="research" class="tab-content">
-        <h2>Current Research & Projects</h2>
-        
-        <div class="feature-box">
-            <h3>Machine Learning for Subseasonal-to-Seasonal Prediction</h3>
-            <p>At NCMRWF, I develop spatiotemporal deep learning architectures to bias-correct and downscale S2S weekly accumulated precipitation forecasts. Utilizing NCUM forecast outputs and IMD observation data, this framework pre-selects atmospheric predictors based on established dynamical relationships (validated via XGBoost feature importance) to increase forecasting resolution from 60 km to 25 km over India.</p>
-        </div>
-
-        <div class="feature-box">
-            <h3>Global Decadal Climate Variability</h3>
-            <p>My doctoral research investigates the predictability of multi-year to decadal climate modes, explicitly focusing on the global impacts of the PDO and TAG indices rather than localized trends. A critical component of this methodology involves taking simple equal-weight averages to calculate final corrected multi-model ensembles (MME), ensuring rigorous treatment of model climatologies defined as averages across initializations (excluding models like IPSL for lead year 7).</p>
-        </div>
-
-        <div class="feature-box">
-            <h3>AI Weather Forecasting & Post-Processing</h3>
-            <p>I actively evaluate, run, and post-process state-of-the-art AI-driven weather forecasting models, including GraphCast, FourCastNet, Pangu-Weather, AIFS-S2S, and the Anemoi framework within High-Performance Computing (HPC) environments.</p>
-        </div>
-
-        <div class="feature-box">
-            <h3>Regional Ocean Modeling (ROMS)</h3>
-            <p>Conducting 1/18° resolution ROMS simulations for the Bay of Bengal. By scaling surface wind stress forcing factors, this research analyzes mesoscale eddy kinetic energy, mean kinetic energy, East India Coastal Current transport, and the dynamics of upper-ocean heat content.</p>
-        </div>
-    </div>
-
-    <!-- SOFTWARE TAB -->
-    <div id="software" class="tab-content">
-        <h2>Software & Tools</h2>
-        
-        <div class="entry">
-            <div class="entry-title">xFieldDyn (In Development)</div>
-            <p class="entry-desc">An open-source Python package engineered on JAX and Flax. Designed for climate field dynamics, empirical orthogonal function (EOF) decomposition, linear inverse modeling, and spatiotemporal neural network forecasting.</p>
-        </div>
-
-        <div class="entry">
-            <div class="entry-title">xIndices</div>
-            <p class="entry-desc">An open-source Python package for robust climate index calculations. Archived on Zenodo (<a href="https://doi.org/10.5281/zenodo.20049771" class="doi">doi:10.5281/zenodo.20049771</a>) with full documentation hosted on Read the Docs.</p>
-        </div>
-
-        <div class="entry">
-            <div class="entry-title">Astrophysics & Orbital Mechanics Simulations</div>
-            <p class="entry-desc">Custom computational Python code and physics simulations for N-body gravitational modeling of the solar system and three-body orbital mechanics, utilizing Matplotlib and Astropy.</p>
-        </div>
-
-        <div class="entry">
-            <div class="entry-title">HPC & Scientific Compute Pipeline</div>
-            <p class="entry-desc">I manage remote Linux/Ubuntu environments via PBS job submissions, utilizing CPU parallelization (Numba/Dask) and multi-GPU neural network training (TensorFlow/Keras/PyTorch DDP on NVIDIA A100s). The toolchain integrates Xarray, NumPy, SciPy, MetPy, Cartopy, Climate Data Operators (CDO), and NCO.</p>
-        </div>
-    </div>
-
-    <!-- FULL CV TAB -->
-    <div id="cv" class="tab-content">
-        <h2>Education</h2>
-        <div class="entry">
-            <div class="entry-header">
-                <span class="entry-title">PhD, Climate Variability and Prediction</span>
-                <span class="entry-date">2026</span>
+    <!-- NAVIGATION -->
+    <nav>
+        <div class="nav-container">
+            <a href="#" class="nav-brand" onclick="openTab('home')">Dr. Jivesh Dixit</a>
+            <div class="nav-links">
+                <button class="nav-btn active" onclick="openTab('home')">Home</button>
+                <button class="nav-btn" onclick="openTab('research')">Research</button>
+                <button class="nav-btn" onclick="openTab('software')">Software</button>
+                <button class="nav-btn" onclick="openTab('cv')">CV & Pubs</button>
             </div>
-            <div class="entry-subtitle">Centre for Atmospheric Sciences, Indian Institute of Technology (IIT) Delhi, India</div>
-            <p class="entry-desc">Research focus: Prediction of Regional Climate at multi-year to decadal timescales. Supervised by the late Prof. Krishna M. AchutaRao (caretaker supervisor Prof. Sandeep Sukumaran). Recommended for Distinction in Doctoral Research.</p>
         </div>
-        <div class="entry">
-            <div class="entry-header">
-                <span class="entry-title">Master of Engineering (M.E.), Mechanical Engineering</span>
-                <span class="entry-date">2013</span>
+    </nav>
+
+    <main>
+        <!-- HOME PAGE -->
+        <div id="home" class="page-section active">
+            <section class="hero">
+                <div class="hero-text">
+                    <h1>Hello, I'm Jivesh Dixit.</h1>
+                    <h2>Climate Scientist & Project Scientist-II at NCMRWF</h2>
+                    <p>I specialize in seasonal-to-decadal variability and prediction. My work bridges computational fluid dynamics and atmospheric sciences to improve extended-range meteorological forecasts globally. At NCMRWF, I deploy deep learning architectures to bias-correct and downscale subseasonal-to-seasonal (S2S) forecasts, moving complex AI methodologies into operational capability.</p>
+                    <a href="#" class="btn-primary" onclick="openTab('cv')"><i class="fas fa-file-alt"></i> View Full CV</a>
+                </div>
+                <div class="hero-image">
+                    <!-- Ensure you upload a square image named profile.jpg to your repository -->
+                    <img src="profile.jpg" alt="Dr. Jivesh Dixit" onerror="this.style.display='none'; this.parentElement.innerHTML='<i class=\'fas fa-user\' style=\'font-size: 4rem;\'></i>'">
+                </div>
+            </section>
+
+            <h2 class="section-title">Latest Updates</h2>
+            <div class="news-container">
+                <div class="news-item">
+                    <div class="news-date">October 2026</div>
+                    <div>Submitted PhD thesis, <em>"Prediction of regional climate at multi-year to decadal timescales,"</em> at IIT Delhi and received external examiner recommendations for Distinction in Doctoral Research.</div>
+                </div>
+                <div class="news-item">
+                    <div class="news-date">October 2026</div>
+                    <div>Submitted manuscript detailing PDO decadal prediction skill in CMIP6 to <em>Climate Dynamics</em>, alongside a preprint to the ESS Open Archive.</div>
+                </div>
+                <div class="news-item">
+                    <div class="news-date">September 2026</div>
+                    <div>Presented research poster at the S2S2D 2026 Conference hosted at the Department of Meteorology, University of Reading, UK, via a funded offer by the WMO.</div>
+                </div>
+                <div class="news-item">
+                    <div class="news-date">May 2026</div>
+                    <div>Created and released the open-source Python package <a href="https://doi.org/10.5281/zenodo.20049771" target="_blank">xIndices</a> for climate analysis, now archived on Zenodo.</div>
+                </div>
             </div>
-            <div class="entry-subtitle">Department of Mechanical Engineering, Indian Institute of Science (IISc) Bangalore, India</div>
-        </div>
-        <div class="entry">
-            <div class="entry-header">
-                <span class="entry-title">Bachelor of Technology (B.Tech.), Mechanical Engineering & Technology</span>
-                <span class="entry-date">2010</span>
-            </div>
-            <div class="entry-subtitle">Krishna Institute of Engineering and Technology, Ghaziabad, India</div>
         </div>
 
-        <h2>Work Experience</h2>
-        <div class="entry">
-            <div class="entry-header">
-                <span class="entry-title">Project Scientist-II</span>
-                <span class="entry-date">Jul 2024 &ndash; present</span>
+        <!-- RESEARCH PAGE -->
+        <div id="research" class="page-section">
+            <h2 class="section-title">Research Themes</h2>
+            <div class="research-grid">
+                
+                <div class="card">
+                    <i class="fas fa-network-wired"></i>
+                    <h3>S2S Machine Learning</h3>
+                    <p>Developing spatiotemporal deep learning architectures to bias-correct and downscale subseasonal-to-seasonal weekly accumulated precipitation forecasts over India. This framework intelligently pre-selects atmospheric predictors based on established dynamical relationships, verified by XGBoost feature importance, to increase resolution from 60 km to 25 km.</p>
+                </div>
+
+                <div class="card">
+                    <i class="fas fa-globe-americas"></i>
+                    <h3>Decadal Climate Variability</h3>
+                    <p>My doctoral research investigates the predictability of multi-year to decadal climate variability modes—specifically the global impacts of the Pacific Decadal Oscillation (PDO) and Tropical Atlantic SST Gradient (TAG) indices, rather than local trends. Methodologies involve calculating corrected multi-model ensembles (MME) using simple equal-weight averages across initializations.</p>
+                </div>
+
+                <div class="card">
+                    <i class="fas fa-cloud-sun-rain"></i>
+                    <h3>AI Weather Forecasting</h3>
+                    <p>Actively running, evaluating, and post-processing state-of-the-art artificial intelligence weather forecasting models on High-Performance Computing systems. Frameworks utilized include GraphCast, FourCastNet, Pangu-Weather, AIFS-S2S, and the Anemoi framework.</p>
+                </div>
+
+                <div class="card">
+                    <i class="fas fa-water"></i>
+                    <h3>Regional Ocean Modeling</h3>
+                    <p>Conducting 1/18° resolution ROMS simulations for the Bay of Bengal. By scaling surface wind stress forcing factors, this research analyzes mesoscale eddy kinetic energy, mean kinetic energy, East India Coastal Current transport, and the dynamics of upper-ocean heat content.</p>
+                </div>
+
             </div>
-            <div class="entry-subtitle">National Centre for Medium Range Weather Forecasting (NCMRWF), MoES, Noida, India</div>
-        </div>
-        <div class="entry">
-            <div class="entry-header">
-                <span class="entry-title">Asst. Professor</span>
-                <span class="entry-date">2015 &ndash; 2019</span>
-            </div>
-            <div class="entry-subtitle">Department of Mechanical Engineering, Graphic ERA University, Dehradun, India</div>
-        </div>
-        <div class="entry">
-            <div class="entry-header">
-                <span class="entry-title">Technical Manager II</span>
-                <span class="entry-date">2013 &ndash; 2014</span>
-            </div>
-            <div class="entry-subtitle">TATA Motors, Engineering Research Center (ERC), Pune, India</div>
         </div>
 
-        <h2>Publications</h2>
-        <h3>Peer-Reviewed Journal Articles</h3>
-        <ul class="pub-list">
-            <li><span class="label">[J3]</span><strong>J. Dixit</strong>, H. Kodamana, S. Sandeep, K. M. AchutaRao (2026). Deep Learning-Based Correction of Decadal Predictions of the PDO and TAG Indices. <em>IEEE Geoscience and Remote Sensing Letters</em>, 23, 1–5. <a href="https://doi.org/10.1109/LGRS.2026.3662257" class="doi">doi:10.1109/LGRS.2026.3662257</a></li>
-            <li><span class="label">[J2]</span>P. Negi, Y. Singh, <strong>J. Dixit</strong>, M. Gwalwanshi, R. Kanojia (2021). Experimental analysis based parametric study of packed bed heat regenerator with air as passing medium. <em>Materials Today: Proceedings</em>.</li>
-            <li><span class="label">[J1]</span>P. Negi, S. Singh, K. Sharma, <strong>J. Dixit</strong>, S. Kumar (2018). Experimental Investigation of Thermal Energy Storage System for Hot Air Applications. <em>Advances in Health and Environment Safety</em>, Springer.</li>
-        </ul>
-        
-        <h3>Selected Under Review / Submitted</h3>
-        <ul class="pub-list">
-            <li><span class="label">[R6]</span><strong>J. Dixit</strong>, K. M. AchutaRao, S. Sandeep. Future Warming Shortens the Memory of the Pacific Decadal Oscillation and Erodes a Source of Near-Term Predictability. <em>Earth's Future</em>.</li>
-            <li><span class="label">[R5]</span><strong>J. Dixit</strong>, K. M. AchutaRao, S. Sandeep. Amplified land rainfall response to the Pacific Decadal Oscillation through stronger El Niño variability. <em>Nature Communications</em>.</li>
-            <li><span class="label">[R4]</span><strong>J. Dixit</strong>, V. M. Mehta, K. M. AchutaRao. Estimating PDO decadal prediction skill in CMIP6: the roles of climatology definition and initialization frequency. <em>Climate Dynamics</em>.</li>
-        </ul>
-    </div>
-</div>
+        <!-- SOFTWARE PAGE -->
+        <div id="software" class="page-section">
+            <h2 class="section-title">Software & Infrastructure</h2>
+            <div class="research-grid">
+                
+                <div class="card">
+                    <i class="fab fa-python"></i>
+                    <h3>xFieldDyn</h3>
+                    <p>An open-source Python package currently in development, engineered on JAX and Flax. Designed for climate field dynamics, empirical orthogonal function (EOF) decomposition, linear inverse modeling, and spatiotemporal neural network forecasting.</p>
+                </div>
 
-<script>
-    function openTab(tabName) {
-        // Hide all tab contents
-        document.querySelectorAll('.tab-content').forEach(tab => {
-            tab.classList.remove('active');
-        });
-        
-        // Remove active class from all buttons
-        document.querySelectorAll('.nav-btn').forEach(btn => {
-            btn.classList.remove('active');
-        });
-        
-        // Show selected tab content and activate button
-        document.getElementById(tabName).classList.add('active');
-        event.currentTarget.classList.add('active');
-        
-        // Smooth scroll back to top if scrolled down far
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-</script>
+                <div class="card">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>xIndices</h3>
+                    <p>An open-source Python package designed for robust climate index calculations. Fully documented and archived on Zenodo. <br><br><a href="https://doi.org/10.5281/zenodo.20049771" target="_blank"><i class="fas fa-external-link-alt"></i> View on Zenodo</a></p>
+                </div>
 
+                <div class="card">
+                    <i class="fas fa-server"></i>
+                    <h3>HPC Compute Pipeline</h3>
+                    <p>Proficient management of remote Linux High-Performance Computing environments. Workflows feature PBS job submissions, CPU parallelization using Numba/Dask, and multi-GPU neural network training (TensorFlow/Keras/PyTorch DDP) utilizing NVIDIA Tesla K40m and A100 architectures.</p>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- CV PAGE -->
+        <div id="cv" class="page-section">
+            <h2 class="section-title">Curriculum Vitae</h2>
+            
+            <div class="cv-block">
+                <h3 style="color: var(--primary); margin-bottom: 20px;"><i class="fas fa-graduation-cap"></i> Education</h3>
+                
+                <div class="cv-entry">
+                    <div class="cv-header">
+                        <span class="cv-title">PhD, Climate Variability and Prediction</span>
+                        <span class="cv-date">2026</span>
+                    </div>
+                    <div class="cv-subtitle">Centre for Atmospheric Sciences, Indian Institute of Technology (IIT) Delhi</div>
+                    <p style="font-size: 0.95rem; color: var(--text-muted);">Research focus: Prediction of Regional Climate at multi-year to decadal timescales. Recommended for Distinction in Doctoral Research.</p>
+                </div>
+
+                <div class="cv-entry">
+                    <div class="cv-header">
+                        <span class="cv-title">Master of Engineering (M.E.), Mechanical Engineering</span>
+                        <span class="cv-date">2013</span>
+                    </div>
+                    <div class="cv-subtitle">Department of Mechanical Engineering, Indian Institute of Science (IISc) Bangalore</div>
+                </div>
+
+                <div class="cv-entry">
+                    <div class="cv-header">
+                        <span class="cv-title">Bachelor of Technology (B.Tech.), Mechanical Engineering & Technology</span>
+                        <span class="cv-date">2010</span>
+                    </div>
+                    <div class="cv-subtitle">Krishna Institute of Engineering and Technology, Ghaziabad</div>
+                </div>
+            </div>
+
+            <div class="cv-block">
+                <h3 style="color: var(--primary); margin-bottom: 20px;"><i class="fas fa-briefcase"></i> Experience</h3>
+                
+                <div class="cv-entry">
+                    <div class="cv-header">
+                        <span class="cv-title">Project Scientist-II</span>
+                        <span class="cv-date">Jul 2024 &ndash; present</span>
+                    </div>
+                    <div class="cv-subtitle">National Centre for Medium Range Weather Forecasting (NCMRWF), MoES, Noida, India</div>
+                    <p style="font-size: 0.95rem; color: var(--text-muted);">Monsoon Mission III project, Coupled Modeling group.</p>
+                </div>
+
+                <div class="cv-entry">
+                    <div class="cv-header">
+                        <span class="cv-title">Asst. Professor</span>
+                        <span class="cv-date">2015 &ndash; 2019</span>
+                    </div>
+                    <div class="cv-subtitle">Department of Mechanical Engineering, Graphic ERA University, Dehradun, India</div>
+                </div>
+
+                <div class="cv-entry">
+                    <div class="cv-header">
+                        <span class="cv-title">Technical Manager II</span>
+                        <span class="cv-date">2013 &ndash; 2014</span>
+                    </div>
+                    <div class="cv-subtitle">TATA Motors, Engineering Research Center (ERC), Pune, India</div>
+                </div>
+            </div>
+
+            <div class="cv-block">
+                <h3 style="color: var(--primary); margin-bottom: 20px;"><i class="fas fa-book"></i> Selected Publications</h3>
+                <ul class="pub-list">
+                    <li>
+                        <span class="label">J3</span>
+                        <strong>J. Dixit</strong>, H. Kodamana, S. Sandeep, K. M. AchutaRao (2026). Deep Learning-Based Correction of Decadal Predictions of the PDO and TAG Indices. <em>IEEE Geoscience and Remote Sensing Letters</em>, 23, 1–5. <a href="https://doi.org/10.1109/LGRS.2026.3662257">doi:10.1109/LGRS.2026.3662257</a>
+                    </li>
+                    <li>
+                        <span class="label">R6</span>
+                        <strong>J. Dixit</strong>, K. M. AchutaRao, S. Sandeep. Future Warming Shortens the Memory of the Pacific Decadal Oscillation and Erodes a Source of Near-Term Predictability. <em>Earth's Future</em> (under review).
+                    </li>
+                    <li>
+                        <span class="label">R5</span>
+                        <strong>J. Dixit</strong>, K. M. AchutaRao, S. Sandeep. Amplified land rainfall response to the Pacific Decadal Oscillation through stronger El Niño variability. <em>Nature Communications</em> (submitted).
+                    </li>
+                    <li>
+                        <span class="label">R4</span>
+                        <strong>J. Dixit</strong>, V. M. Mehta, K. M. AchutaRao. Estimating PDO decadal prediction skill in CMIP6: the roles of climatology definition and initialization frequency. <em>Climate Dynamics</em> (under review).
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="social-links">
+            <a href="mailto:jiveshdixit@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>
+            <a href="https://github.com/JiveshDixit" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+            <a href="https://www.linkedin.com/in/jivesh-dixit-0b237629/" target="_blank" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+        <div class="footer-text">
+            &copy; 2026 Dr. Jivesh Dixit. All rights reserved.<br>
+            Project Scientist-II | National Centre for Medium Range Weather Forecasting
+        </div>
+    </footer>
+
+    <script>
+        function openTab(tabName) {
+            // Manage Content
+            document.querySelectorAll('.page-section').forEach(tab => tab.classList.remove('active'));
+            document.getElementById(tabName).classList.add('active');
+            
+            // Manage Nav Buttons
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            const activeBtn = Array.from(document.querySelectorAll('.nav-btn')).find(btn => btn.getAttribute('onclick').includes(tabName));
+            if(activeBtn) activeBtn.classList.add('active');
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>
