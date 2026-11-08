@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>xIndices Tool | Dr. Jivesh Dixit</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="/blogs" class="nav-brand"><i class="fas fa-arrow-left"></i> Back to Blogs</a>
+            <div class="nav-links">
+                <a href="/" class="nav-btn">Home</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <article class="article-card">
+            <h1 class="article-title" style="font-size: 2.2rem;">xIndices: A Comprehensive Tool for Climate Variability Analysis</h1>
+            <div class="article-meta"><i class="far fa-calendar-alt"></i> November 2026 &nbsp;|&nbsp; <i class="fas fa-tag"></i> Software Release</div>
+            
+            <div class="article-content">
+                <p>Climate change is one of the most pressing issues of our time, and understanding its effects requires sophisticated analytical tools. Presenting <strong>xIndices</strong>, a powerful, <code>xarray</code>-based Python library designed to compute Sea Surface Temperature (SST) trends, SST variability modes, and other atmospheric variability modes.</p>
+                
+                <p>Tailored specifically for researchers and practitioners in climate science, xIndices simplifies the calculation of various climate variability indices and patterns, making it substantially easier to derive insights from complex, multi-dimensional Earth system datasets.</p>
+
+                <h4>Key Features</h4>
+                <ul>
+                    <li><strong>Data Preprocessing:</strong> Supports multiple tools enabling users to load, regrid, and manipulate data with ease, fully integrated with methods defined by the Earth System Modeling Framework (ESMF).</li>
+                    <li><strong>Rotated EOF Analysis:</strong> Perform Empirical Orthogonal Function (EOF) analysis—both rotated (Varimax and Promax) and unrotated. This functionality allows users to examine EOF modes within user-defined regions, making it highly valuable for targeted spatial analyses.</li>
+                    <li><strong>Variety of Climate Variability Modes:</strong> Natively supports the calculation of major climate modes including the SST Warming mode, ENSO (El Niño-Southern Oscillation), PDO (Pacific Decadal Oscillation), AMO (Atlantic Multidecadal Oscillation), and NAO (North Atlantic Oscillation).</li>
+                    <li><strong>Parameter Controls for Variability Definitions:</strong> Extensive customization allows researchers to tailor definitions of variability. This flexibility is crucial for adapting the module to specific study requirements or unique regional climate characteristics.</li>
+                    <li><strong>Future Plans:</strong> More variability modes are planned for future updates to ensure the library stays relevant as new climate patterns are studied. We also plan to integrate comprehensive community support to drive extensive open-source development.</li>
+                </ul>
+
+                <h4>Documentation</h4>
+                <p>Detailed documentation of xIndices is hosted on Read the Docs. Please consult the documentation to explore submodules for pre-processing data, computing modes of variability, and visualizing both time-series (1D) and spatial patterns (2D).</p>
+
+                <a href="https://xindices.readthedocs.io/en/latest/" target="_blank" class="link-preview">
+                    <div class="link-preview-img"><i class="fas fa-book"></i></div>
+                    <div class="link-preview-text">
+                        <div class="link-preview-title">xIndices Documentation — Read the Docs</div>
+                        <div class="link-preview-desc">Official documentation, API references, and tutorials for the xIndices Python package for climate variability analysis.</div>
+                    </div>
+                </a>
+
+                <h4>Installation</h4>
+                <p>Getting started with xIndices is straightforward. You can install it via conda (recommended) or pip.</p>
+
+                <div class="code-block">
+                    <span class="comment"># Using conda (recommended):</span><br>
+                    conda create -n x_indices -c conda-forge python=3.11 &nbsp;&nbsp;<span class="comment">## (OPTIONAL)</span><br>
+                    conda activate x_indices<br>
+                    conda install -c jiveshdixit -c conda-forge xindices
+                </div>
+
+                <div class="code-block">
+                    <span class="comment"># Using pip:</span><br>
+                    conda create -n x_indices -c conda-forge python=3.11 xesmf &nbsp;&nbsp;<span class="comment">## (MANDATORY for dependencies)</span><br>
+                    conda activate x_indices<br>
+                    pip install xIndices
+                </div>
+
+                <h4>Requirements & Starter Notebook</h4>
+                <p>xIndices requires Python versions between 3.10 and 3.12 and is designed to be fully platform-independent. For starters, I have provided a PDF export of a Jupyter Notebook demonstrating basic usage and the various capabilities of the module. I hope this serves as a helpful launchpad for students and new members of the community.</p>
+
+                <a href="https://drive.google.com/file/d/1toVCmKEA27kMtFHwQTlNFJx2WrOsT_ZP/view" target="_blank" class="link-preview">
+                    <div class="link-preview-img" style="background:#fce8e6; color:#d93025;"><i class="fas fa-file-pdf"></i></div>
+                    <div class="link-preview-text">
+                        <div class="link-preview-title">xIndices_Starter_Tutorial.pdf</div>
+                        <div class="link-preview-desc">Jupyter Notebook PDF showcasing basic usage, preprocessing steps, and visual outputs generated by xIndices.</div>
+                    </div>
+                </a>
+
+                <h4>Community and Conclusion</h4>
+                <p>Whether you're a climate scientist, data analyst, or student, xIndices is your go-to tool for analyzing climate variability. Its robust features streamline the analytical process, allowing you to focus on what matters—understanding and mitigating the effects of climate change. Join the growing community of xIndices users! For comments, suggestions, and error reporting, connect with us through our Slack community page.</p>
+            </div>
+        </article>
+    </main>
+
+    <footer>
+        <div class="social-links">
+            <a href="mailto:jiveshdixit@gmail.com"><i class="fas fa-envelope"></i></a>
+            <a href="https://github.com/JiveshDixit" target="_blank"><i class="fab fa-github"></i></a>
+            <a href="https://www.linkedin.com/in/jivesh-dixit-0b237629/" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+        <div class="footer-text">&copy; 2026 Dr. Jivesh Dixit. All rights reserved.</div>
+    </footer>
+</body>
+</html>
