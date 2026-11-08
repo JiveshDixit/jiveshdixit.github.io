@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Catastrophe Model | Dr. Jivesh Dixit</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="/blogs" class="nav-brand"><i class="fas fa-arrow-left"></i> Back to Blogs</a>
+            <div class="nav-links">
+                <a href="/" class="nav-btn">Home</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <article class="article-card">
+            <h1 class="article-title" style="font-size: 2.2rem;">Simple Catastrophe Model: Risk Assessment from a Cyclone Case</h1>
+            <div class="article-meta"><i class="far fa-calendar-alt"></i> November 2026 &nbsp;|&nbsp; <i class="fas fa-tag"></i> Risk Assessment & Modeling</div>
+            
+            <div class="article-content">
+                <p>Imagine a powerful cyclone makes landfall near a densely populated coastal region. Infrastructures like homes, businesses, and other critical buildings lie in its path. How can we assess the potential damage and financial losses from such a devastating event? This is where catastrophe models come in.</p>
+                
+                <p>These models are essential tools for the insurance and reinsurance industries, helping them understand and quantify the risk posed by cyclones. By estimating potential losses, catastrophe models enable insurers to set appropriate premiums, manage their exposure to risk, and ensure they have the financial capacity to pay out claims in the event of a disaster. Re-insurers, who provide insurance to insurance companies, also rely heavily on these models to assess and manage their own risk portfolios.</p>
+
+                <p>In this blog post, we'll explore a simplified catastrophe model and apply it to a real-world cyclone case study. We'll see how these models help us quantify and manage risk, playing a vital role in building resilience against the devastating impacts of cyclones.</p>
+
+                <h4>Components of a Catastrophe Model</h4>
+                <p>Catastrophe models are built on a foundation of four key components: hazard, vulnerability, exposure, and financial. These work together to give us a comprehensive picture of risk. The first three components form the classic "Risk Triangle", a fundamental concept in understanding and managing risk.</p>
+                
+                <ul>
+                    <li><strong>Hazard:</strong> This module contains a vast catalogue of simulated events, each representing a possible peril scenario (earthquake, cyclone/hurricane, etc.). Consider it a library of "what-if" scenarios covering a wide range of intensities, locations, and paths. Each event comes with a unique "footprint" showing the extent and intensity of the hazard.</li>
+                    <li><strong>Vulnerability:</strong> This module determines how susceptible assets are to damage. It uses damage functions to estimate expected damage based on asset characteristics (e.g., building material, age, height) and the local intensity of the hazard (e.g., wind speed).</li>
+                    <li><strong>Exposure:</strong> This module catalogs the real-world assets—buildings and infrastructure—that might be affected. It contains detailed information about their location, value, and existing insurance policies, including deductibles, limits, and reinsurance coverage.</li>
+                    <li><strong>Financial:</strong> This module crunches the numbers to calculate the financial impact. By aggregating damage estimates, policy details, and reinsurance arrangements across scenarios, it generates a loss probability distribution to understand the likelihood of different loss levels.</li>
+                </ul>
+
+                <h4>A Custom Simple Catastrophe Model</h4>
+                <p>I have created a simple catastrophe model that assumes an overall Total Insured Value (TIV) range of $100,000 to $1,500,000 for buildings exposed to strong winds during a cyclone landfall event (the moment the cyclone crosses the coastal boundary inland).</p>
+                
+                <p>Meteorological data to assess landfall conditions is sourced from the ERA5 reanalysis[cite: 1, 2]. Building data in the exposed region is assessed using OpenStreetMap (OSM)[cite: 1, 3]. While OSM data quality can vary geographically, it provides a wealth of metadata—such as building type, levels, and materials—making it highly powerful for exposure modeling.</p>
+
+                <p>In this model, the maximum wind location is assumed to be the point of landfall, and damage is calculated based on strong winds and heavy precipitation alone. While this approximation simplifies reality (where the strongest winds may strike land before the eye arrives), it provides a clear deterministic baseline. The model calculates the decay in wind-speed moving away from the eye using a linear decay function, and assumes damage varies linearly with both wind and precipitation.</p>
+
+                <p>The model code is available on <a href="https://github.com/JiveshDixit/Simple-Catastrophe-Model/tree/main/CAT_model" target="_blank">GitHub</a>. It outputs a list of buildings that face damage (saved as a CSV) and produces an interactive map of geotagged buildings showing damaged vs. non-damaged assets.</p>
+
+                <h4>Using the Model: Typhoon Haiyan Case Study</h4>
+                <p>To get hands-on experience, I have provided a Jupyter Notebook detailing a test case on Typhoon Haiyan in the Philippines (Nov. 2013). You can adapt this notebook for other cyclones by adjusting parameters such as <code>cyclone_name</code>, bounding coordinates, time period, and <code>Place_name</code> for vulnerability analysis.</p>
+
+                <a href="https://drive.google.com/file/d/1wcz2QaSuo9odfOFh46p9TLs1ZmPQOp2J/view" target="_blank" class="link-preview">
+                    <div class="link-preview-img" style="background:#fce8e6; color:#d93025;"><i class="fas fa-file-pdf"></i></div>
+                    <div class="link-preview-text">
+                        <div class="link-preview-title">Test_Haiyan Jupyter Notebook (PDF)</div>
+                        <div class="link-preview-desc">A complete walkthrough of the catastrophe model assessing exposure and deterministic losses during Typhoon Haiyan, utilizing ERA5 reanalysis and OSM geospatial data.</div>
+                    </div>
+                </a>
+
+                <h4 style="margin-top: 40px;">References</h4>
+                <ul style="list-style: none; padding-left: 0; font-size: 0.9rem; color: var(--text-muted);">
+                    <li style="margin-bottom: 10px;">Mignan (2022). Categorizing and Harmonizing Natural, Technological, and Socio-Economic Perils Following the Catastrophe Modeling Paradigm. <em>International Journal of Environmental Research and Public Health</em>, 19(19), 12780. <a href="https://doi.org/10.3390/ijerph191912780" target="_blank">doi:10.3390/ijerph191912780</a></li>
+                    <li style="margin-bottom: 10px;">Hersbach et al. (2020). The ERA5 global reanalysis. <em>Q.J.R. Meteorol. Soc.</em>, 146, 1999–2049. <a href="https://doi.org/10.1002/qj.3803" target="_blank">doi:10.1002/qj.3803</a></li>
+                    <li>Boeing (2024). Modelling and Analysing Urban Networks and Amenities with OSMnx. <em>Working paper</em>. <a href="https://geoffboeing.com/publications/osmnx-paper/" target="_blank">geoffboeing.com</a></li>
+                </ul>
+
+            </div>
+        </article>
+    </main>
+
+    <footer>
+        <div class="social-links">
+            <a href="mailto:jiveshdixit@gmail.com"><i class="fas fa-envelope"></i></a>
+            <a href="https://github.com/JiveshDixit" target="_blank"><i class="fab fa-github"></i></a>
+            <a href="https://www.linkedin.com/in/jivesh-dixit-0b237629/" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+        <div class="footer-text">&copy; 2026 Dr. Jivesh Dixit. All rights reserved.</div>
+    </footer>
+</body>
+</html>
