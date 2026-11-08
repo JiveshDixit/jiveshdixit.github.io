@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Understanding CMIP Variant Labels | Dr. Jivesh Dixit</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="/blogs" class="nav-brand"><i class="fas fa-arrow-left"></i> Back to Blogs</a>
+            <div class="nav-links">
+                <a href="/" class="nav-btn">Home</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <article class="article-card">
+            <h1 class="article-title" style="font-size: 2.2rem;">Understanding Variant Labels in CMIP5 and CMIP6 Ensembles</h1>
+            <div class="article-meta"><i class="far fa-calendar-alt"></i> November 2026 &nbsp;|&nbsp; <i class="fas fa-tag"></i> Climate Modeling</div>
+            
+            <div class="article-content">
+                <p>In climate modeling projects like CMIP5 and CMIP6, variant labels are crucial for identifying specific simulations within large ensemble experiments. To systematically locate and distinguish these runs, specific global attributes have been defined:</p>
+                
+                <ul>
+                    <li><strong>Experiment ID:</strong> Identifies the root experiment for the simulation (e.g., <code>historical</code>, SSP scenarios like <code>ssp126</code> or <code>ssp245</code>, <code>dcppA-hindcast</code>).</li>
+                    <li><strong>Sub-experiment ID:</strong> Specifies a sub-experiment within a defined ensemble (otherwise set to <code>None</code>). While undefined in CMIP5, it is heavily utilized in CMIP6, particularly for Decadal Climate Prediction Project (DCPP) experiments. For instance, in <code>dcppA-hindcast</code> experiments, <code>s1961</code> denotes the initialization year.</li>
+                    <li><strong>Variant Label:</strong> A compound identifier built from distinct indices (Realization, Initialization, Physics, and Forcing) used to uniquely tag simulations from a single model's ensemble.</li>
+                </ul>
+
+                <h4>The Four Variant Indices</h4>
+                
+                <p><strong>1. Realization Index (k &ge; 1):</strong> Distinguishes among ensemble members that differ solely in their temporal initialization point (e.g., branched from different points in a pre-industrial control run).</p>
+                <p><em>Note:</em> Simulations with different forcing factors (e.g., natural vs. anthropogenic) that branch from the same point in time will share the same realization number. However, this rule has exceptions—such as DCPP experiments, which initialize annually but may reuse realization numbers across different start years. Crucially, sharing a realization number across different models does not guarantee they share an equivalent initialization point.</p>
+
+                <p><strong>2. Initialization Index (l &ge; 1):</strong> Differentiates between various algorithms or observational datasets used to impose initial conditions on a forecast experiment. If only one method is used, it defaults to <code>1</code>.</p>
+
+                <p><strong>3. Physics Index (m &ge; 1):</strong> Identifies the physics version of the model. A single physics version is assigned <code>1</code>. Consistency across all simulations of a particular model is strictly required.</p>
+                <p><em>Note:</em> If a model features substantial physical differences from its baseline, it should ideally receive a new <code>source_id</code>, rather than just a different Physics Index. While CMIP5 relied solely on the above three indices, CMIP6 introduced a fourth index to capture forcing variations.</p>
+
+                <p><strong>4. Forcing Index (n &ge; 1) [CMIP6 Only]:</strong> Distinguishes between runs that follow the standard protocol of a single experiment but apply different forcing datasets. For example, two historical simulations—one using CMIP6-recommended forcings and another using an alternative dataset—are differentiated by this index.</p>
+
+                <div style="background: var(--primary-light); padding: 15px 20px; border-left: 4px solid var(--primary); margin-top: 25px; border-radius: 4px;">
+                    <h4 style="margin-top: 0; color: var(--primary);">Summary: The Final Variant Label</h4>
+                    <p style="margin-bottom: 0;">The complete variant label is concatenated as <code>r&lt;k&gt;i&lt;l&gt;p&lt;m&gt;f&lt;n&gt;</code>. For example, a label of <strong><code>r2i1p3f233</code></strong> translates to a Realization index of 2, Initialization index of 1, Physics index of 3, and Forcing index of 233.</p>
+                </div>
+            </div>
+        </article>
+    </main>
+
+    <footer>
+        <div class="social-links">
+            <a href="mailto:jiveshdixit@gmail.com"><i class="fas fa-envelope"></i></a>
+            <a href="https://github.com/JiveshDixit" target="_blank"><i class="fab fa-github"></i></a>
+            <a href="https://www.linkedin.com/in/jivesh-dixit-0b237629/" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+        <div class="footer-text">&copy; 2026 Dr. Jivesh Dixit. All rights reserved.</div>
+    </footer>
+</body>
+</html>
