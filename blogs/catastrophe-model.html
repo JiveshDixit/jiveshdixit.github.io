@@ -42,7 +42,7 @@
                 <h4>A Custom Simple Catastrophe Model</h4>
                 <p>I have created a simple catastrophe model that assumes an overall Total Insured Value (TIV) range of $100,000 to $1,500,000 for buildings exposed to strong winds during a cyclone landfall event (the moment the cyclone crosses the coastal boundary inland).</p>
                 
-                <p>Meteorological data to assess landfall conditions is sourced from the ERA5 reanalysis[cite: 1, 2]. Building data in the exposed region is assessed using OpenStreetMap (OSM)[cite: 1, 3]. While OSM data quality can vary geographically, it provides a wealth of metadata—such as building type, levels, and materials—making it highly powerful for exposure modeling.</p>
+                <p>Meteorological data to assess landfall conditions is sourced from the ERA5 reanalysis (Hersbach et al. 2020). Building data in the exposed region is assessed using OpenStreetMap (OSM; Boeing (2024)) . While OSM data quality can vary geographically, it provides a wealth of metadata—such as building type, levels, and materials—making it highly powerful for exposure modeling.</p>
 
                 <p>In this model, the maximum wind location is assumed to be the point of landfall, and damage is calculated based on strong winds and heavy precipitation alone. While this approximation simplifies reality (where the strongest winds may strike land before the eye arrives), it provides a clear deterministic baseline. The model calculates the decay in wind-speed moving away from the eye using a linear decay function, and assumes damage varies linearly with both wind and precipitation.</p>
 
