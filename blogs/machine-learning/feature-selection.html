@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Part 3: Feature Selection | Dr. Jivesh Dixit</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="/blogs/machine-learning" class="nav-brand"><i class="fas fa-arrow-left"></i> Back to Series</a>
+            <div class="nav-links">
+                <a href="/" class="nav-btn">Home</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <article class="article-card">
+            <h1 class="article-title" style="font-size: 2.2rem;">Part 3: Physics First: Feature Selection and Leakage Prevention</h1>
+            <div class="article-meta"><i class="far fa-calendar-alt"></i> November 2026 &nbsp;|&nbsp; <i class="fas fa-tag"></i> Feature Engineering</div>
+            
+            <div class="article-content">
+                <p>Data leakage occurs when information from outside the training dataset is used to create the model. This leads to wildly optimistic performance estimates that collapse in production.</p>
+                
+                <h4>Data Leakages and Prevention</h4>
+                <ul>
+                    <li><strong>Preprocessing Leakage:</strong> Fitting a scaler or imputer on the entire dataset before splitting. The test set mean and variance have now leaked into the training transformations.</li>
+                    <li><strong>Target Leakage:</strong> Including a feature that is a proxy for the target or is measured after the target event occurs.</li>
+                    <li><strong>Spatiotemporal Leakage:</strong> In gridded spatial data, adjacent grid cells are practically identical. If Cell A is in the train set and adjacent Cell B is in the test set, the model is learning to memorize local spatial patterns rather than generalize.</li>
+                </ul>
+
+                <p>To prevent this, always use Pipelines to ensure transformations are strictly fitted only on the active training fold during cross-validation.</p>
+                <div class="code-block">
+<span class="comment"># Preventing Preprocessing Leakage with Pipelines</span>
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.ensemble import RandomForestRegressor
+
+pipeline = Pipeline([
+    ('scaler', StandardScaler()),
+    ('model', RandomForestRegressor())
+])
+                </div>
+
+                <h4>Feature Selection: Guiding the Framework</h4>
+                <p>Throwing hundreds of raw features into a neural network often degrades performance due to collinearity. A scientifically robust approach involves a two-step guiding process.</p>
+                
+                <p><strong>Step 1 Domain-Driven Selection:</strong> Before algorithms touch the data, pre-select predictors that have established physical or dynamical relationships with your target. This ensures the model searches for physically meaningful patterns rather than spurious statistical noise.</p>
+                
+                <p><strong>Step 2 Algorithmic Importance:</strong> Once a physically sound feature pool is established, use gradient boosting frameworks to rank feature importance and drop redundant covariates.</p>
+                <div class="code-block">
+<span class="comment"># Feature Selection using XGBoost Feature Importance</span>
+import xgboost as xgb
+
+model = xgb.XGBRegressor(n_estimators=100, max_depth=4)
+model.fit(X_train, y_train)
+
+importance = model.feature_importances_
+<span class="comment"># Plot or threshold features based on importance scores</span>
+                </div>
+            </div>
+        </article>
+    </main>
+
+    <footer>
+        <div class="social-links">
+            <a href="mailto:jiveshdixit@gmail.com"><i class="fas fa-envelope"></i></a>
+            <a href="https://github.com/JiveshDixit" target="_blank"><i class="fab fa-github"></i></a>
+            <a href="https://www.linkedin.com/in/jivesh-dixit-0b237629/" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+        <div class="footer-text">&copy; 2026 Dr. Jivesh Dixit. All rights reserved.</div>
+    </footer>
+</body>
+</html>
