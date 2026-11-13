@@ -23,38 +23,29 @@
             <div class="article-meta"><i class="far fa-calendar-alt"></i> November 2026 &nbsp;|&nbsp; <i class="fas fa-tag"></i> Earth System ML</div>
             
             <div class="article-content">
-                <p>Building a machine learning model that performs well on a training set is easy. Building one that generalizes to unseen, real-world data—especially in Earth System Sciences involving complex spatiotemporal dependencies—requires strict adherence to methodological best practices.</p>
+                <p>Building a machine learning model that performs well on a training set is easy. Building one that generalizes to unseen real-world data requires strict adherence to methodological best practices. This is particularly true in Earth System Sciences where datasets involve complex spatiotemporal dependencies.</p>
                 
-                <p>Standard data science tutorials often rely on datasets where predicting house prices or classifying images works seamlessly with random data splits. In operational meteorology and climate downscaling, using these naive approaches guarantees failure. The fundamental rule of this blog series is simple: <strong>The Earth is not IID (Independent and Identically Distributed).</strong></p>
+                <p>Standard data science tutorials often rely on datasets where predicting house prices or classifying images works seamlessly with random data splits. In operational meteorology and climate downscaling, using these naive approaches guarantees failure. The fundamental rule of this blog series is simple: The Earth is not IID (Independent and Identically Distributed).</p>
 
-                <p>This series, <em>Building Robust ML Frameworks for Earth Sciences</em>, will guide researchers and meteorologists in implementing rigorous, physically consistent machine learning pipelines using modern stacks like PyTorch, JAX, Xarray, Scikit-learn, LightGBM, and Optuna. Before we dive into the code in subsequent posts, we must first establish the core terminology and philosophy that will dictate our architecture.</p>
+                <p>This series will guide researchers and meteorologists in implementing rigorous and physically consistent machine learning pipelines using modern stacks like PyTorch, JAX, Xarray, Scikit-learn, LightGBM, and Optuna. Before we dive into the code in subsequent posts, we must first establish the core terminology and philosophy that will dictate our architecture.</p>
 
-                <h4>Core Terminology & The Myth of IID</h4>
+                <h4>Core Terminology and The Myth of IID</h4>
                 
                 <ul>
-                    <li><strong>IID (Independent and Identically Distributed):</strong> The assumption that each data point is completely independent of the next. In atmospheric data, adjacent grid cells (space) and consecutive time steps (time) are highly correlated. Treating them as IID is mathematically flawed.</li>
-                    <li><strong>Autocorrelation:</strong> The degree of similarity between a given time series and a lagged version of itself over successive time intervals. Because weather patterns persist, yesterday's 500 hPa geopotential height heavily influences today's.</li>
-                    <li><strong>Data Leakage:</strong> A fatal flaw where information from outside the training dataset (usually the future) is accidentally used to create the model. In Earth sciences, this often happens through <em>preprocessing leakage</em> (e.g., fitting a scaler on the entire 1980-2020 dataset before predicting 2020) or <em>detrending leakage</em> (removing a global warming trend calculated using the test data).</li>
-                    <li><strong>Ablation Study:</strong> Systematically removing components of a machine learning framework (a feature, a neural network layer, or a custom loss function) to quantify its individual contribution. We use this to defend against "complexity for complexity's sake."</li>
+                    <li><strong>IID (Independent and Identically Distributed):</strong> The assumption that each data point is completely independent of the next. In atmospheric data, adjacent grid cells in space and consecutive time steps in time are highly correlated. Treating them as IID is mathematically flawed.</li>
+                    <li><strong>Autocorrelation:</strong> The degree of similarity between a given time series and a lagged version of itself over successive time intervals. Because weather patterns persist, yesterday's 500 hPa geopotential height heavily influences today's values.</li>
+                    <li><strong>Data Leakage:</strong> A fatal flaw where information from outside the training dataset is accidentally used to create the model. In Earth sciences, this often happens through preprocessing leakage (fitting a scaler on the entire 1980 to 2020 dataset before predicting 2020) or detrending leakage (removing a global warming trend calculated using the test data).</li>
+                    <li><strong>Ablation Study:</strong> Systematically removing components of a machine learning framework to quantify its individual contribution. We use this to defend against unnecessary complexity.</li>
                 </ul>
 
                 <h4>Our Guiding Philosophies</h4>
                 <p>To build operational-grade models for tasks like S2S bias correction or predicting SST anomalies, we will strictly adhere to the following principles throughout this series:</p>
 
                 <ol>
-                    <li style="margin-bottom: 10px;"><strong>Physics First, Algorithms Second:</strong> We do not dump hundreds of raw variables into an XGBoost model and hope it finds a pattern. For feature selection, we always start with domain-driven selection—choosing variables with established dynamical relationships (like specific teleconnection indices or moisture transport corridors)—<em>before</em> running algorithmic feature importance.</li>
-                    <li style="margin-bottom: 10px;"><strong>Interrogate the Data:</strong> Before deciding on a U-Net, Graph Neural Network, or LightGBM, you must interrogate your data. What is the spatial resolution? Temporal frequency? Seasonality? The architecture must serve the data's physical reality, not the other way around.</li>
-                    <li style="margin-bottom: 10px;"><strong>Explainable AI (XAI) is Mandatory:</strong> Model transparency is a requirement, not a bonus. We will utilize Layer-wise Relevance Propagation (LRP), Integrated Gradients, and SHAP to ensure our models are learning true physical mechanisms rather than spatial noise.</li>
+                    <li style="margin-bottom: 10px;"><strong>Physics First, Algorithms Second:</strong> We do not dump hundreds of raw variables into an XGBoost model and hope it finds a pattern. For feature selection, we always start with domain-driven selection before running algorithmic feature importance. We must choose variables with established dynamical relationships like specific teleconnection indices or moisture transport corridors.</li>
+                    <li style="margin-bottom: 10px;"><strong>Interrogate the Data:</strong> Before deciding on a neural network architecture, you must interrogate your data. You must determine the spatial resolution, the temporal frequency, and the seasonality. The architecture must serve the physical reality of the data.</li>
+                    <li style="margin-bottom: 10px;"><strong>Explainable AI is Mandatory:</strong> Model transparency is a requirement rather than a bonus. We will utilize Layer-wise Relevance Propagation and SHAP to ensure our models are learning true physical mechanisms instead of spatial noise.</li>
                 </ol>
-
-                <h4>Roadmap for the Series</h4>
-                <p>Over the next few posts, we will transform these philosophies into executable Python code:</p>
-                <ul>
-                    <li><strong>Part 2: Data Splitting Strategies</strong> - Moving beyond <code>train_test_split</code>. We will implement temporal blocking, spatial block cross-validation, and purged k-fold strategies for autocorrelated data.</li>
-                    <li><strong>Part 3: Leakage Prevention & Feature Selection</strong> - Building foolproof Scikit-learn pipelines and leveraging dynamical domain knowledge.</li>
-                    <li><strong>Part 4: Hyperparameter Optimization</strong> - Utilizing Bayesian optimization via Optuna to intelligently navigate complex spatiotemporal parameter spaces.</li>
-                    <li><strong>Part 5: Explainable AI (XAI)</strong> - Opening the black box to prove our models respect atmospheric physics.</li>
-                </ul>
 
                 <p>Stay tuned for Part 2, where we will open Xarray and tackle the complexities of autocorrelated data splitting head-on.</p>
             </div>
