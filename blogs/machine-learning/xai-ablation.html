@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Part 5: XAI & Ablation | Dr. Jivesh Dixit</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="/blogs/machine-learning" class="nav-brand"><i class="fas fa-arrow-left"></i> Back to Series</a>
+            <div class="nav-links">
+                <a href="/" class="nav-btn">Home</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <article class="article-card">
+            <h1 class="article-title" style="font-size: 2.2rem;">Part 5: Mandatory XAI and Ablation Studies</h1>
+            <div class="article-meta"><i class="far fa-calendar-alt"></i> November 2026 &nbsp;|&nbsp; <i class="fas fa-tag"></i> Model Interpretability</div>
+            
+            <div class="article-content">
+                <p>An ablation study involves systematically removing components of your machine learning framework to quantify their individual contributions to the overall performance. It is the computational equivalent of a controlled scientific experiment.</p>
+                
+                <h4>Types of Ablation Studies</h4>
+                <ul>
+                    <li><strong>Feature Ablation:</strong> Removing a specific input variable to prove its necessity. If the error remains the same, the feature is redundant.</li>
+                    <li><strong>Architecture Ablation:</strong> Removing specific layers of a neural network to justify the architectural complexity.</li>
+                    <li><strong>Loss Ablation:</strong> If you designed a custom loss function with a variance-restoring penalty term, train a baseline model using standard mean squared error and compare the results. The performance delta justifies your custom component.</li>
+                </ul>
+
+                <p>Ablation studies defend against complexity for the sake of complexity. They provide interpretability and streamline model architectures by highlighting useless components. They are strictly required in rigorous academic publications to prove that your proposed algorithmic novelty actually drives the improvement.</p>
+
+                <h4>Explainable AI (XAI)</h4>
+                <p>Model transparency is mandatory in climate sciences. We cannot deploy models that predict extreme precipitation without understanding the atmospheric patterns triggering the prediction. Frameworks like SHAP (SHapley Additive exPlanations) and Layer-wise Relevance Propagation allow us to trace predictions back to the original input variables. This ensures the model relies on true physical mechanisms rather than exploiting spatial artifacts or background noise.</p>
+            </div>
+        </article>
+    </main>
+
+    <footer>
+        <div class="social-links">
+            <a href="mailto:jiveshdixit@gmail.com"><i class="fas fa-envelope"></i></a>
+            <a href="https://github.com/JiveshDixit" target="_blank"><i class="fab fa-github"></i></a>
+            <a href="https://www.linkedin.com/in/jivesh-dixit-0b237629/" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+        <div class="footer-text">&copy; 2026 Dr. Jivesh Dixit. All rights reserved.</div>
+    </footer>
+</body>
+</html>
