@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Part 4: Hyperparameter Tuning | Dr. Jivesh Dixit</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="/blogs/machine-learning" class="nav-brand"><i class="fas fa-arrow-left"></i> Back to Series</a>
+            <div class="nav-links">
+                <a href="/" class="nav-btn">Home</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <article class="article-card">
+            <h1 class="article-title" style="font-size: 2.2rem;">Part 4: Intelligent Hyperparameter Tuning with Optuna</h1>
+            <div class="article-meta"><i class="far fa-calendar-alt"></i> November 2026 &nbsp;|&nbsp; <i class="fas fa-tag"></i> Model Optimization</div>
+            
+            <div class="article-content">
+                <p>Finding the perfect parameters for your machine learning models can drastically change their predictive power. Grid Search is exhaustive but computationally prohibitive. Random Search is faster but entirely blind to previous results.</p>
+                
+                <p>Bayesian Optimization via frameworks like Optuna is the modern standard for operational workflows. It builds a probabilistic model of the objective function and intelligently explores the hyperparameter space. It focuses explicitly on areas likely to yield improvements based on past trials.</p>
+                
+                <p>Here is how we implement an intelligent search space for a gradient boosting regressor.</p>
+
+                <div class="code-block">
+<span class="comment"># Intelligent Hyperparameter Tuning with Optuna</span>
+import optuna
+import lightgbm as lgb
+from sklearn.metrics import mean_squared_error
+
+def objective(trial):
+    params = {
+        'learning_rate': trial.suggest_float('learning_rate', 1e-4, 0.1, log=True),
+        'max_depth': trial.suggest_int('max_depth', 3, 10),
+        'num_leaves': trial.suggest_int('num_leaves', 10, 100)
+    }
+    
+    model = lgb.LGBMRegressor(**params)
+    model.fit(X_train, y_train)
+    preds = model.predict(X_val)
+    return mean_squared_error(y_val, preds)
+
+study = optuna.create_study(direction='minimize')
+study.optimize(objective, n_trials=50)
+print("Best hyperparameters:", study.best_params)
+                </div>
+            </div>
+        </article>
+    </main>
+
+    <footer>
+        <div class="social-links">
+            <a href="mailto:jiveshdixit@gmail.com"><i class="fas fa-envelope"></i></a>
+            <a href="https://github.com/JiveshDixit" target="_blank"><i class="fab fa-github"></i></a>
+            <a href="https://www.linkedin.com/in/jivesh-dixit-0b237629/" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+        <div class="footer-text">&copy; 2026 Dr. Jivesh Dixit. All rights reserved.</div>
+    </footer>
+</body>
+</html>
