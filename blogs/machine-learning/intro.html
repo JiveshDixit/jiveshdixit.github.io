@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Part 1: The Earth is Not IID | Dr. Jivesh Dixit</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="/blogs/machine-learning" class="nav-brand"><i class="fas fa-arrow-left"></i> Back to Series</a>
+            <div class="nav-links">
+                <a href="/" class="nav-btn">Home</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <article class="article-card">
+            <h1 class="article-title" style="font-size: 2.2rem;">Part 1: The Earth is Not IID (Introduction & Terminology)</h1>
+            <div class="article-meta"><i class="far fa-calendar-alt"></i> November 2026 &nbsp;|&nbsp; <i class="fas fa-tag"></i> Earth System ML</div>
+            
+            <div class="article-content">
+                <p>Building a machine learning model that performs well on a training set is easy. Building one that generalizes to unseen, real-world data—especially in Earth System Sciences involving complex spatiotemporal dependencies—requires strict adherence to methodological best practices.</p>
+                
+                <p>Standard data science tutorials often rely on datasets where predicting house prices or classifying images works seamlessly with random data splits. In operational meteorology and climate downscaling, using these naive approaches guarantees failure. The fundamental rule of this blog series is simple: <strong>The Earth is not IID (Independent and Identically Distributed).</strong></p>
+
+                <p>This series, <em>Building Robust ML Frameworks for Earth Sciences</em>, will guide researchers and meteorologists in implementing rigorous, physically consistent machine learning pipelines using modern stacks like PyTorch, JAX, Xarray, Scikit-learn, LightGBM, and Optuna. Before we dive into the code in subsequent posts, we must first establish the core terminology and philosophy that will dictate our architecture.</p>
+
+                <h4>Core Terminology & The Myth of IID</h4>
+                
+                <ul>
+                    <li><strong>IID (Independent and Identically Distributed):</strong> The assumption that each data point is completely independent of the next. In atmospheric data, adjacent grid cells (space) and consecutive time steps (time) are highly correlated. Treating them as IID is mathematically flawed.</li>
+                    <li><strong>Autocorrelation:</strong> The degree of similarity between a given time series and a lagged version of itself over successive time intervals. Because weather patterns persist, yesterday's 500 hPa geopotential height heavily influences today's.</li>
+                    <li><strong>Data Leakage:</strong> A fatal flaw where information from outside the training dataset (usually the future) is accidentally used to create the model. In Earth sciences, this often happens through <em>preprocessing leakage</em> (e.g., fitting a scaler on the entire 1980-2020 dataset before predicting 2020) or <em>detrending leakage</em> (removing a global warming trend calculated using the test data).</li>
+                    <li><strong>Ablation Study:</strong> Systematically removing components of a machine learning framework (a feature, a neural network layer, or a custom loss function) to quantify its individual contribution. We use this to defend against "complexity for complexity's sake."</li>
+                </ul>
+
+                <h4>Our Guiding Philosophies</h4>
+                <p>To build operational-grade models for tasks like S2S bias correction or predicting SST anomalies, we will strictly adhere to the following principles throughout this series:</p>
+
+                <ol>
+                    <li style="margin-bottom: 10px;"><strong>Physics First, Algorithms Second:</strong> We do not dump hundreds of raw variables into an XGBoost model and hope it finds a pattern. For feature selection, we always start with domain-driven selection—choosing variables with established dynamical relationships (like specific teleconnection indices or moisture transport corridors)—<em>before</em> running algorithmic feature importance.</li>
+                    <li style="margin-bottom: 10px;"><strong>Interrogate the Data:</strong> Before deciding on a U-Net, Graph Neural Network, or LightGBM, you must interrogate your data. What is the spatial resolution? Temporal frequency? Seasonality? The architecture must serve the data's physical reality, not the other way around.</li>
+                    <li style="margin-bottom: 10px;"><strong>Explainable AI (XAI) is Mandatory:</strong> Model transparency is a requirement, not a bonus. We will utilize Layer-wise Relevance Propagation (LRP), Integrated Gradients, and SHAP to ensure our models are learning true physical mechanisms rather than spatial noise.</li>
+                </ol>
+
+                <h4>Roadmap for the Series</h4>
+                <p>Over the next few posts, we will transform these philosophies into executable Python code:</p>
+                <ul>
+                    <li><strong>Part 2: Data Splitting Strategies</strong> - Moving beyond <code>train_test_split</code>. We will implement temporal blocking, spatial block cross-validation, and purged k-fold strategies for autocorrelated data.</li>
+                    <li><strong>Part 3: Leakage Prevention & Feature Selection</strong> - Building foolproof Scikit-learn pipelines and leveraging dynamical domain knowledge.</li>
+                    <li><strong>Part 4: Hyperparameter Optimization</strong> - Utilizing Bayesian optimization via Optuna to intelligently navigate complex spatiotemporal parameter spaces.</li>
+                    <li><strong>Part 5: Explainable AI (XAI)</strong> - Opening the black box to prove our models respect atmospheric physics.</li>
+                </ul>
+
+                <p>Stay tuned for Part 2, where we will open Xarray and tackle the complexities of autocorrelated data splitting head-on.</p>
+            </div>
+        </article>
+    </main>
+
+    <footer>
+        <div class="social-links">
+            <a href="mailto:jiveshdixit@gmail.com"><i class="fas fa-envelope"></i></a>
+            <a href="https://github.com/JiveshDixit" target="_blank"><i class="fab fa-github"></i></a>
+            <a href="https://www.linkedin.com/in/jivesh-dixit-0b237629/" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+        <div class="footer-text">&copy; 2026 Dr. Jivesh Dixit. All rights reserved.</div>
+    </footer>
+</body>
+</html>
