@@ -1,1 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Part 2: Data Splitting | Dr. Jivesh Dixit</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="/blogs/machine-learning" class="nav-brand"><i class="fas fa-arrow-left"></i> Back to Series</a>
+            <div class="nav-links">
+                <a href="/" class="nav-btn">Home</a>
+            </div>
+        </div>
+    </nav>
 
+    <main>
+        <article class="article-card">
+            <h1 class="article-title" style="font-size: 2.2rem;">Part 2: Navigating Autocorrelation and Seasonality in Data Splits</h1>
+            <div class="article-meta"><i class="far fa-calendar-alt"></i> November 2026 &nbsp;|&nbsp; <i class="fas fa-tag"></i> Data Engineering</div>
+            
+            <div class="article-content">
+                <p>The standard random train and test split is only valid under the assumption that data points are completely independent. When dealing with real-world physical systems, this assumption almost always fails.</p>
+
+                <h4>A. Non-Autocorrelated Data</h4>
+                <p>If your dataset consists of completely independent observations, a standard randomized split or a stratified split to preserve class distributions is sufficient.</p>
+                <div class="code-block">
+<span class="comment"># Standard Split for Independent Data</span>
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+                </div>
+
+                <h4>B. Autocorrelated Data Without Seasonality</h4>
+                <p>In time-series or spatial data, adjacent points are highly correlated. A random split allows future data to bleed into the training set. This gives the model a sneak peek at the future. For simple autocorrelated data, you must use a strict temporal cutoff.</p>
+                <div class="code-block">
+<span class="comment"># Strict Temporal Cutoff for Autocorrelated Data</span>
+split_idx = int(len(df) * 0.8)
+train_df = df.iloc[:split_idx]
+test_df = df.iloc[split_idx:]
+                </div>
+
+                <h4>C. Autocorrelated Data With Seasonality</h4>
+                <p>When data exhibits strong seasonality like annual meteorological cycles, a naive temporal split might isolate specific seasons in the test set. It might also allow the model to memorize the seasonal cycle from the train set and apply it trivially to the validation set of the same year. The solution is Block Cross-Validation (keeping full seasonal cycles intact) or Purged K-Fold (adding a gap between train and test sets to let autocorrelation decay).</p>
+                <div class="code-block">
+<span class="comment"># Block Cross-Validation Grouping by Year</span>
+from sklearn.model_selection import GroupKFold
+import numpy as np
+
+groups = df['year'].values <span class="comment"># Ensure entire years are kept together</span>
+gkf = GroupKFold(n_splits=5)
+
+for train_idx, val_idx in gkf.split(X, y, groups=groups):
+    X_train, X_val = X[train_idx], X[val_idx]
+    <span class="comment"># Proceed to train the model</span>
+                </div>
+            </div>
+        </article>
+    </main>
+
+    <footer>
+        <div class="social-links">
+            <a href="mailto:jiveshdixit@gmail.com"><i class="fas fa-envelope"></i></a>
+            <a href="https://github.com/JiveshDixit" target="_blank"><i class="fab fa-github"></i></a>
+            <a href="https://www.linkedin.com/in/jivesh-dixit-0b237629/" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+        <div class="footer-text">&copy; 2026 Dr. Jivesh Dixit. All rights reserved.</div>
+    </footer>
+</body>
+</html>
