@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprehensive Guide to ML Frameworks | Dr. Jivesh Dixit</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="/blogs/machine-learning" class="nav-brand"><i class="fas fa-arrow-left"></i> Back to Series</a>
+            <div class="nav-links">
+                <a href="/" class="nav-btn">Home</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <article class="article-card">
+            <h1 class="article-title" style="font-size: 2.2rem;">Best Practices in Machine Learning Frameworks: A Comprehensive Guide</h1>
+            <div class="article-meta"><i class="far fa-calendar-alt"></i> November 2026 &nbsp;|&nbsp; <i class="fas fa-book"></i> Full Masterclass</div>
+            
+            <div class="article-content">
+                <p>Building a machine learning model that performs well on a training set is easy. Building one that generalizes to unseen real-world data requires strict adherence to methodological best practices. This is highly important in complex domains involving spatiotemporal dependencies. Without a robust framework, models are prone to learning artificial shortcuts rather than true underlying dynamics.</p>
+                
+                <p>In this comprehensive guide, we will explore the critical pillars of a robust machine learning framework in Earth System Sciences: strategic data splitting, preventing data leakage, intelligent feature selection, hyperparameter optimization, and the necessity of ablation studies.</p>
+
+                <h4 style="margin-top: 40px; border-bottom: 2px solid var(--border); padding-bottom: 10px;">1. Data Splitting: Navigating Autocorrelation and Seasonality</h4>
+                <p>The standard random train and test split is only valid under the assumption that data points are independent and identically distributed. When dealing with real-world physical systems, this assumption almost always fails.</p>
+
+                <strong>A. Non-Autocorrelated Data</strong>
+                <p>If your dataset consists of completely independent observations, a standard randomized split or a stratified split to preserve class distributions is sufficient.</p>
+                <div class="code-block">
+<span class="comment"># Standard Split</span>
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+                </div>
+
+                <strong>B. Autocorrelated Data Without Seasonality</strong>
+                <p>In time-series or spatial data, adjacent points are highly correlated. A random split allows future data to bleed into the training set, giving the model a look at the future. For simple autocorrelated data, you must use a strict temporal cutoff.</p>
+                <div class="code-block">
+<span class="comment"># Strict Temporal Cutoff</span>
+split_idx = int(len(df) * 0.8)
+train_df = df.iloc[:split_idx]
+test_df = df.iloc[split_idx:]
+                </div>
+
+                <strong>C. Autocorrelated Data With Seasonality</strong>
+                <p>When data exhibits strong seasonality like annual meteorological cycles, a naive temporal split might isolate specific seasons in the test set. The solution is Block Cross-Validation (keeping full seasonal cycles intact) or Purged K-Fold (adding a gap between train and test sets to let autocorrelation decay).</p>
+                <div class="code-block">
+<span class="comment"># Block Cross-Validation Grouping by Year</span>
+from sklearn.model_selection import GroupKFold
+import numpy as np
+
+groups = df['year'].values
+gkf = GroupKFold(n_splits=5)
+
+for train_idx, val_idx in gkf.split(X, y, groups=groups):
+    X_train, X_val = X[train_idx], X[val_idx]
+                </div>
+
+                <h4 style="margin-top: 40px; border-bottom: 2px solid var(--border); padding-bottom: 10px;">2. Data Leakages and Prevention</h4>
+                <p>Data leakage occurs when information from outside the training dataset is used to create the model, leading to wildly optimistic performance estimates.</p>
+                
+                <ul>
+                    <li><strong>Preprocessing Leakage:</strong> Fitting a scaler on the entire dataset before splitting. The test set data has now leaked into the training transformations.</li>
+                    <li><strong>Target Leakage:</strong> Including a feature that is a proxy for the target or is measured after the target event occurs.</li>
+                    <li><strong>Spatiotemporal Leakage:</strong> In gridded spatial data, adjacent grid cells are practically identical. Random sampling allows the model to memorize local patterns.</li>
+                </ul>
+
+                <p><strong>Prevention:</strong> Always use Pipelines to ensure transformations are strictly fitted only on the active training fold during cross-validation.</p>
+                <div class="code-block">
+<span class="comment"># Preventing Preprocessing Leakage with Pipelines</span>
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.ensemble import RandomForestRegressor
+
+pipeline = Pipeline([
+    ('scaler', StandardScaler()),
+    ('model', RandomForestRegressor())
+])
+                </div>
+
+                <h4 style="margin-top: 40px; border-bottom: 2px solid var(--border); padding-bottom: 10px;">3. Feature Selection: Guiding the Framework</h4>
+                <p>Throwing hundreds of raw features into a neural network degrades performance due to collinearity. A scientifically robust approach involves a two-step guiding process.</p>
+                
+                <p><strong>Step 1 Domain-Driven Selection:</strong> Before algorithms touch the data, pre-select predictors that have established physical relationships with your target. This ensures the model searches for physically meaningful patterns.</p>
+                
+                <p><strong>Step 2 Algorithmic Importance:</strong> Once a physically sound feature pool is established, use gradient boosting frameworks to rank feature importance and drop redundant covariates.</p>
+                <div class="code-block">
+<span class="comment"># Feature Selection using XGBoost</span>
+import xgboost as xgb
+
+model = xgb.XGBRegressor(n_estimators=100, max_depth=4)
+model.fit(X_train, y_train)
+importance = model.feature_importances_
+                </div>
+
+                <h4 style="margin-top: 40px; border-bottom: 2px solid var(--border); padding-bottom: 10px;">4. Hyperparameter Tuning with Bayesian Optimization</h4>
+                <p>Bayesian Optimization via frameworks like Optuna is the modern standard. It builds a probabilistic model of the objective function and intelligently explores the hyperparameter space.</p>
+                <div class="code-block">
+<span class="comment"># Intelligent Hyperparameter Tuning with Optuna</span>
+import optuna
+import lightgbm as lgb
+from sklearn.metrics import mean_squared_error
+
+def objective(trial):
+    params = {
+        'learning_rate': trial.suggest_float('learning_rate', 1e-4, 0.1, log=True),
+        'max_depth': trial.suggest_int('max_depth', 3, 10),
+        'num_leaves': trial.suggest_int('num_leaves', 10, 100)
+    }
+    
+    model = lgb.LGBMRegressor(**params)
+    model.fit(X_train, y_train)
+    preds = model.predict(X_val)
+    return mean_squared_error(y_val, preds)
+
+study = optuna.create_study(direction='minimize')
+study.optimize(objective, n_trials=50)
+                </div>
+
+                <h4 style="margin-top: 40px; border-bottom: 2px solid var(--border); padding-bottom: 10px;">5. Ablation Studies and XAI</h4>
+                <p>An ablation study involves systematically removing components of your framework to quantify their individual contributions. This includes feature ablation, architecture ablation, and loss function ablation.</p>
+                
+                <p>These studies defend against unnecessary complexity. They provide interpretability, streamline model architectures by highlighting useless components, and are required in peer-reviewed publications to prove that your proposed algorithmic novelty actually drives the improvement.</p>
+                
+                <p>Finally, model transparency is mandatory in climate modeling. By utilizing tools like Layer-wise Relevance Propagation and SHAP, we ensure our models respect atmospheric physics instead of exploiting background noise.</p>
+            </div>
+        </article>
+    </main>
+
+    <footer>
+        <div class="social-links">
+            <a href="mailto:jiveshdixit@gmail.com"><i class="fas fa-envelope"></i></a>
+            <a href="https://github.com/JiveshDixit" target="_blank"><i class="fab fa-github"></i></a>
+            <a href="https://www.linkedin.com/in/jivesh-dixit-0b237629/" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+        <div class="footer-text">&copy; 2026 Dr. Jivesh Dixit. All rights reserved.</div>
+    </footer>
+</body>
+</html>
